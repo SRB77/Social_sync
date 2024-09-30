@@ -16,6 +16,7 @@ export const createConversation = mutation({
     // jane and john
     // [jane, john]
     // [john, jane]
+
     const existingConversation = await ctx.db
       .query("conversations")
       .filter((q) =>
@@ -58,9 +59,7 @@ export const getMyConversations = query({
       .query("users")
       .withIndex("by_tokenIdentifier", (q) =>
         q.eq("tokenIdentifier", identity.tokenIdentifier)
-      )
-      .unique();
-
+      ).unique();
     if (!user) throw new ConvexError("User not found");
 
     const conversations = await ctx.db.query("conversations").collect();
